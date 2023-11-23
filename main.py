@@ -22,11 +22,12 @@ while True:
     # led.low()
     # time.sleep(0.1)
     # led.high()
-    # time.sleep(0.01)
+    time.sleep(0.01)
     # HALL read
     hall_value = hall.read_u16()
-    if i % 1000 == 0:
-        print("hall_value: %d", hall_value)
+    if i % 100 == 0:
+        led.toggle()
+        print("hall_value: %d" % hall_value)
     if hall_value > hall_max:
         hall_value = hall_max
     if hall_value < hall_min:
