@@ -24,6 +24,10 @@ def collect_hall_neutral(hall):
     return neutral, min_v, max_v
 
 
+def exponential(x, e=3.0):
+    return x / (1 + (1/e) - x)/e
+
+
 led = Pin(25, Pin.OUT)
 
 print("Hello world")
@@ -53,10 +57,14 @@ while True:
         hall_value = hall_min
 
     if hall_value > hall_neutral_max:
+        # Forward
         hall_fraction = (hall_value - hall_neutral_max) / (hall_max - hall_neutral_max)
+        hall_fraction = exponential(hall_fraction, 5)
         angle = 90 + (hall_fraction * 45)
     else:
+        # Backward
         hall_fraction = (hall_neutral_min - hall_value) / (hall_neutral_min - hall_min)
+        hall_fraction = exponential(hall_fraction, 5)
         angle = 90 - (hall_fraction * 45)
 
     if i % 100 == 0:
