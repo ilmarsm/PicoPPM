@@ -3,23 +3,18 @@ from machine import Pin, ADC
 from ppm import Servo
 
 
-def collect_hall_neutral(hall):
-    i = 0
+def collect_hall_neutral(hall: ADC):
+    collection_time = 0.5  # seconds
     steps = 50
     neutral = 0
     min_v = 999999
     max_v = 0
-    while True:
-        i += 1
-        if i > steps:
-            break
-        time.sleep(0.01)
+    for _ in range(steps):
+        time.sleep(collection_time/steps)
         value = hall.read_u16()
         neutral += value / steps
-        if value < min_v:
-            min_v = value
-        if value > max_v:
-            max_v = value
+        min_v = min(min_v, value)
+        max_v = max(max_v, value)
 
     return neutral, min_v, max_v
 
